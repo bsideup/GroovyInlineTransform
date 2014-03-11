@@ -14,7 +14,7 @@ import static org.objectweb.asm.Opcodes.*;
 @CompileStatic // yep, it's ok with CompileStatic ;)
 class BasicTest extends TestCase {
     
-    @InlineTransform(debug = true, value = { ASTNode node, SourceUnit source ->
+    @InlineTransform({ ASTNode node, SourceUnit source ->
         (node as ClassNode).addField("testField", ACC_PUBLIC, ClassHelper.STRING_TYPE, new ConstantExpression("Groovy is awesome!"))
     })
     static class TestClass {}
