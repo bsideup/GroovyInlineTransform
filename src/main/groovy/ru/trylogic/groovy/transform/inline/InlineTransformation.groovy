@@ -74,7 +74,6 @@ public class InlineTransformation implements ASTTransformation {
             }
         }
         catch(Exception e) {
-            e.printStackTrace()
             sourceUnit.addError(new SyntaxException("", e, closureExpression.lineNumber, closureExpression.columnNumber));
         }
     }
