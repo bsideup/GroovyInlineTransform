@@ -1,13 +1,9 @@
 package ru.trylogic.groovy.transform.inline
 
-import groovy.inspect.swingui.AstNodeToScriptVisitor
 import groovy.transform.CompileStatic;
 import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.AnnotationNode
-import org.codehaus.groovy.ast.ClassCodeVisitorSupport
-import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.ImportNode
-import org.codehaus.groovy.ast.PackageNode
 import org.codehaus.groovy.ast.expr.ClosureExpression
 import org.codehaus.groovy.ast.expr.ConstantExpression;
 import org.codehaus.groovy.control.CompilePhase;

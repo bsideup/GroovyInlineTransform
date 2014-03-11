@@ -16,8 +16,10 @@ class BasicTest extends TestCase {
     
     static final String TRUTH = "Groovy is awesome!";
     
-    @InlineTransform(debug = true, value = {ASTNode node, SourceUnit source ->
-        (node as ClassNode).addField("testField", ACC_PUBLIC, ClassHelper.STRING_TYPE, new ConstantExpression(ru.trylogic.groovy.transform.inline.tests.BasicTest.TRUTH))
+    @InlineTransform(debug = true, value = { ASTNode node, SourceUnit source ->
+        // Ugly current class full qualified reference, i know. Will improve next time
+        def expression = new ConstantExpression(ru.trylogic.groovy.transform.inline.tests.BasicTest.TRUTH)
+        (node as ClassNode).addField("testField", ACC_PUBLIC, ClassHelper.STRING_TYPE, expression)
     })
     static class TestClass {
         
