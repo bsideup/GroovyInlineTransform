@@ -10,6 +10,10 @@ import java.lang.annotation.RetentionPolicy
 @GroovyASTTransformationClass(["ru.trylogic.groovy.transform.inline.InlineTransformation"])
 @interface InlineTransform {
     Class value();
-    
+
+    /**
+     * will log generated source to stdout if true
+     * @return
+     */
     boolean debug() default false;
 }

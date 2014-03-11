@@ -14,21 +14,15 @@ import static org.objectweb.asm.Opcodes.*;
 @CompileStatic // yep, it's ok with CompileStatic ;)
 class BasicTest extends TestCase {
     
-    static final String TRUTH = "Groovy is awesome!";
-    
     @InlineTransform(debug = true, value = { ASTNode node, SourceUnit source ->
-        // Ugly current class full qualified reference, i know. Will improve next time
-        def expression = new ConstantExpression(ru.trylogic.groovy.transform.inline.tests.BasicTest.TRUTH)
-        (node as ClassNode).addField("testField", ACC_PUBLIC, ClassHelper.STRING_TYPE, expression)
+        (node as ClassNode).addField("testField", ACC_PUBLIC, ClassHelper.STRING_TYPE, new ConstantExpression("Groovy is awesome!"))
     })
-    static class TestClass {
-        
-    }
+    static class TestClass {}
     
     public void testMethod() {
         
         def instance = new TestClass();
         
-        assertEquals("Groovy is awesome!", TRUTH);
+        assertEquals("Groovy is awesome!", instance.testField);
     }
 }

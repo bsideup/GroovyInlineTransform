@@ -1,8 +1,12 @@
 package ru.trylogic.groovy.transform.inline
 
+import groovy.inspect.swingui.AstNodeToScriptVisitor
 import groovy.transform.CompileStatic;
 import org.codehaus.groovy.ast.ASTNode
+import org.codehaus.groovy.ast.AnnotatedNode
 import org.codehaus.groovy.ast.AnnotationNode
+import org.codehaus.groovy.ast.ClassHelper
+import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.ImportNode
 import org.codehaus.groovy.ast.expr.ClosureExpression
 import org.codehaus.groovy.ast.expr.ConstantExpression;
@@ -34,7 +38,7 @@ public class InlineTransformation implements ASTTransformation {
         def closureSource = convertClosureToSource(sourceUnit.getSource(), closureExpression);
 
         try {
-            
+
             def script = "";
 
             def ast = sourceUnit.getAST()
@@ -44,14 +48,30 @@ public class InlineTransformation implements ASTTransformation {
 
             script += closureSource;
             
-            if((annotationNode.getMember("debug") as ConstantExpression)?.value == true) {
-                //TODO should i use SLF4j here?
-                println script
-            }
-            
             Handler result = (Handler) (new GroovyShell()).evaluate(script);
             
             result.transform(node, sourceUnit);
+
+            if((annotationNode.getMember("debug") as ConstantExpression)?.value == true) {
+                //TODO should i use SLF4j here?
+                
+                def writer = new StringWriter();
+                
+                def visitor = new AstNodeToScriptVisitor(writer);
+                
+                (node as AnnotatedNode).annotations.removeAll { AnnotationNode annotatedClassNode ->
+                    annotatedClassNode.classNode == ClassHelper.makeWithoutCaching(InlineTransform, false)
+                }
+                
+                switch(node) {
+                    case ClassNode:
+                        visitor.visitClass(node as ClassNode);
+                        break;
+                    //TODO more cases
+                }
+                
+                println writer.toString()
+            }
         }
         catch(Exception e) {
             e.printStackTrace()
