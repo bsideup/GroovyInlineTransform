@@ -12,7 +12,7 @@
         <version>7</version>
     </parent>
 
-    <name>MacroGroovy</name>
+    <name>GroovyInlineTransform</name>
 
     <url>https://github.com/bsideup/GroovyInlineTransform</url>
 
